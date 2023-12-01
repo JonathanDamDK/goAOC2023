@@ -33,8 +33,11 @@ func (day DayOne) Solve() {
 			}
 		}
 	}
-	println(day.Output)
-	//part two
+	//part two	
+	print("Day1 part1: ")
+	print(day.Output)
+	print("\n")
+
 	day.Output = 0
 	for _, elem := range day.input {
 		///also matches the spelled out words
@@ -54,7 +57,9 @@ func (day DayOne) Solve() {
 			}
 		}
 	}
-	println(day.Output)
+	print("Day1 part2: ")
+	print(day.Output)
+	print("\n")
 
 }
 
