@@ -27,8 +27,10 @@ func (day DayOne) Solve() {
 		} else {
 			reg := regexp.MustCompile("([1-9]).*")
 			match := reg.FindStringSubmatch(elem)
-			num := MapStringToInt(match[1])
-			day.Output += num*10 + num
+			if len(match) > 0 {
+				num := MapStringToInt(match[1])
+				day.Output += num*10 + num
+			}
 		}
 	}
 	println(day.Output)
@@ -45,12 +47,14 @@ func (day DayOne) Solve() {
 			day.Output += num1*10 + num2
 		} else {
 			reg := regexp.MustCompile("([1-9]|one|two|three|four|five|six|seven|eight|nine).*")
-			match := reg.FindStringSubmatch(elem)
-			num := MapStringToInt(match[1])
-			day.Output += num*10 + num
+			if len(match) > 0 {
+				match := reg.FindStringSubmatch(elem)
+				num := MapStringToInt(match[1])
+				day.Output += num*10 + num
+			}
 		}
 	}
-println(day.Output)
+	println(day.Output)
 
 }
 
