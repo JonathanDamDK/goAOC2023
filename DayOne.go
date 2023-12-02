@@ -1,19 +1,21 @@
 package main
 
 import (
+	"fmt"
 	"regexp"
 )
 
 type DayOne struct {
-	inputPath string
-	input     []string
-	Output    int
+	inputPath  string
+	input      []string
+	output     int
+	output_snd int
 }
 
 func (day DayOne) Solve() {
 
 	//part one
-	day.Output = 0
+	day.output = 0
 	day.input = MapFileToStringArr(day.inputPath)
 	for _, elem := range day.input {
 
@@ -23,22 +25,19 @@ func (day DayOne) Solve() {
 		if len(match) > 0 {
 			num1 := MapStringToInt(match[1])
 			num2 := MapStringToInt(match[2])
-			day.Output += num1*10 + num2
+			day.output += num1*10 + num2
 		} else {
 			reg := regexp.MustCompile("([1-9]).*")
 			match := reg.FindStringSubmatch(elem)
 			if len(match) > 0 {
 				num := MapStringToInt(match[1])
-				day.Output += num*10 + num
+				day.output += num*10 + num
 			}
 		}
 	}
-	//part two	
-	print("Day1 part1: ")
-	print(day.Output)
-	print("\n")
+	//part two
 
-	day.Output = 0
+	day.output_snd = 0
 	for _, elem := range day.input {
 		///also matches the spelled out words
 		reg := regexp.MustCompile("([1-9]|one|two|three|four|five|six|seven|eight|nine).*([1-9]|one|two|three|four|five|six|seven|eight|nine).*")
@@ -47,19 +46,17 @@ func (day DayOne) Solve() {
 
 			num1 := getIntFromSpelledNumberOrVal(match[1])
 			num2 := getIntFromSpelledNumberOrVal(match[2])
-			day.Output += num1*10 + num2
+			day.output_snd += num1*10 + num2
 		} else {
 			reg := regexp.MustCompile("([1-9]|one|two|three|four|five|six|seven|eight|nine).*")
 			if len(match) > 0 {
 				match := reg.FindStringSubmatch(elem)
 				num := MapStringToInt(match[1])
-				day.Output += num*10 + num
+				day.output_snd += num*10 + num
 			}
 		}
 	}
-	print("Day1 part2: ")
-	print(day.Output)
-	print("\n")
+	fmt.Printf("day 1: pt1 : %d pt2: %d (currently incorrect)\n", day.output, day.output_snd)
 
 }
 

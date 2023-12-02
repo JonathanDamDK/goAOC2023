@@ -8,5 +8,5 @@ type DayThree struct {
 
 func (day DayThree) Solve() {
 
-	print("dayThree has not been solved yet\n")
+	print("day 3 has not been solved yet\n")
 }

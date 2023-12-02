@@ -55,13 +55,8 @@ func (day DayTwo) Solve() {
 			day.Output += game.gameId
 		}
 	}
-	fmt.Printf("Day2 pt1: %d \n", day.Output)
+	fmt.Printf("day 2 part 1: %d part2 : %d \n", day.Output, ptTwoOutput)
 
-	//part two
-	day.Output = ptTwoOutput
-	print("Day2 pt2: ")
-	print(day.Output)
-	print("\n")
 }
 
 func parseGame(gameStr string) game {

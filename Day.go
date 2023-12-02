@@ -1,5 +1,5 @@
-package main;
+package main
 
-type Day interface{
-		Solve();
+type Day interface {
+	Solve()
 }
