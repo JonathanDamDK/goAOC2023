@@ -4,6 +4,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 func main() {
@@ -35,7 +36,7 @@ func main() {
 					regex := regexp.MustCompile(regStr)
 					res, _ := regexp.MatchString(regStr, arg)
 					if res {
-						match := regex.FindAllSubmatch([]byte(os.Args[1]), -1)
+						match := regex.FindAllSubmatch([]byte(arg), -1)
 						num, _ := strconv.Atoi(string(match[0][1]))
 						includeTo = num
 					}
@@ -44,7 +45,13 @@ func main() {
 
 		}
 		if onlyToday{
-			dayArray[len(dayArray)-1].Solve()
+			timeObj := time.Now()
+			currDay := timeObj.Day()
+			if(currDay > 25){
+				println("sorry today is not a advent of code day")
+			} else{ 
+				dayArray[currDay-1].Solve()
+			}
 		} else {
 			for index, day := range dayArray {
 				if index < includeFrom-1 {
