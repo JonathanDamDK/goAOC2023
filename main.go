@@ -48,7 +48,7 @@ func main() {
 			timeObj := time.Now()
 			currDay := timeObj.Day()
 			if(currDay > 25){
-				println("sorry today is not a advent of code day")
+				println("sorry today functionality is only available from 1-25th december")
 			} else{ 
 				dayArray[currDay-1].Solve()
 			}
