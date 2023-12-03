@@ -50,7 +50,6 @@ func (day DayTwo) Solve() {
 
 		}
 		ptTwoOutput += maxCount.Red * maxCount.Green * maxCount.Blue
-
 		if valid {
 			day.Output += game.gameId
 		}
@@ -100,7 +99,7 @@ func parseGame(gameStr string) game {
 	//check if there is a count pending, in the case of ; 2 green, there would be a currCount object with a count greater than one,
 	if currCount.Red != 0 || currCount.Green != 0 || currCount.Blue != 0 {
 		countArr = append(countArr, currCount)
-		currCount = colorCount{0, 0, 0} // emphazising that the currCount is reset, is not necessary for 
+		currCount = colorCount{0, 0, 0} // emphazising that the currCount is reset, is not necessary for
 
 	}
 	result.CountArray = countArr

@@ -12,7 +12,7 @@ func main() {
 	dayArray := []Day{
 		DayOne{inputPath: "./inputs/dayOne.txt"},
 		DayTwo{inputPath: "./inputs/dayTwo.txt"},
-		DayThree{inputPath:  "./dayThree.txt"},
+		DayThree{inputPath:  "./inputs/dayThree.txt"},
 		DayFour{},
 		DayFive{},
 		DaySix{},
