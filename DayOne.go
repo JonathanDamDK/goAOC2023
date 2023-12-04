@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"regexp"
+	"strings"
 )
 
 type DayOne struct {
@@ -40,18 +41,31 @@ func (day DayOne) Solve() {
 	day.output_snd = 0
 	for _, elem := range day.input {
 		///also matches the spelled out words
+		/*
+			eightwo
+			eighthree
+			oneight
+			fiveight
+			threeight
+			sevenine
+		*/
+		modifiedStr := strings.Replace(elem, "eightwo", "eighttwo", -1)
+		modifiedStr = strings.Replace(modifiedStr, "eighthree", "eightthree", -1)
+		modifiedStr = strings.Replace(modifiedStr, "oneight", "oneeight", -1)
+		modifiedStr = strings.Replace(modifiedStr, "fiveight", "fiveeight", -1)
+		modifiedStr = strings.Replace(modifiedStr, "threeight", "threeeight", -1)
+		modifiedStr = strings.Replace(modifiedStr, "sevenine", "sevennine", -1)
 		reg := regexp.MustCompile("([1-9]|one|two|three|four|five|six|seven|eight|nine).*([1-9]|one|two|three|four|five|six|seven|eight|nine).*")
-		match := reg.FindStringSubmatch(elem)
+		match := reg.FindStringSubmatch(modifiedStr)
 		if len(match) > 0 {
-
 			num1 := getIntFromSpelledNumberOrVal(match[1])
 			num2 := getIntFromSpelledNumberOrVal(match[2])
 			day.output_snd += num1*10 + num2
 		} else {
 			reg := regexp.MustCompile("([1-9]|one|two|three|four|five|six|seven|eight|nine).*")
-			if len(match) > 0 {
-				match := reg.FindStringSubmatch(elem)
-				num := MapStringToInt(match[1])
+			innerMatch := reg.FindStringSubmatch(modifiedStr)
+			if len(innerMatch) > 0 {
+				num := getIntFromSpelledNumberOrVal(innerMatch[1])
 				day.output_snd += num*10 + num
 			}
 		}
