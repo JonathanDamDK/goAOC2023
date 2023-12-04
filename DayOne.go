@@ -70,7 +70,7 @@ func (day DayOne) Solve() {
 			}
 		}
 	}
-	fmt.Printf("day 1: pt1 : %d pt2: %d (currently incorrect)\n", day.output, day.output_snd)
+	fmt.Printf("day 1: pt1 : %d pt2: %d \n", day.output, day.output_snd)
 
 }
 
