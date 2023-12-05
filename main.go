@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"regexp"
 	"strconv"
@@ -12,9 +13,9 @@ func main() {
 	dayArray := []Day{
 		DayOne{inputPath: "./inputs/dayOne.txt"},
 		DayTwo{inputPath: "./inputs/dayTwo.txt"},
-		DayThree{inputPath:  "./inputs/dayThree.txt"},
-		DayFour{inputPath : "./inputs/DayFour.txt"},
-		DayFive{},
+		DayThree{inputPath: "./inputs/dayThree.txt"},
+		DayFour{inputPath: "./inputs/DayFour.txt"},
+		DayFive{inputPath: "./inputs/DayFive.txt"},
 		DaySix{},
 		DaySeven{},
 		DayEight{},
@@ -41,6 +42,7 @@ func main() {
 	onlyToday := false
 	includeTo := 10000
 	includeFrom := 0
+	trackExecutionTime := false
 	if len(os.Args[1:]) > 0 {
 		for _, arg := range os.Args {
 			if arg == "-today" {
@@ -61,34 +63,47 @@ func main() {
 						match := regex.FindAllSubmatch([]byte(arg), -1)
 						num, _ := strconv.Atoi(string(match[0][1]))
 						includeTo = num
+					} else {
+						regStr := "-includeTime"
+						res, _ := regexp.MatchString(regStr, arg)
+						if res {
+							println("will time in execution")
+							trackExecutionTime = true
+						}
 					}
 				}
 			}
 
 		}
-		if onlyToday{
-			timeObj := time.Now()
-			currDay := timeObj.Day()
-			if(currDay > 25){
-				println("sorry today functionality is only available from 1-25th december")
-			} else{ 
-				dayArray[currDay-1].Solve()
-			}
-		} else {
-			for index, day := range dayArray {
-				if index < includeFrom-1 {
-					continue
-				}
-				if index > includeTo-1{
-					continue
-				}
-				day.Solve()
-			}
-		}
+	}
+	var startTime time.Time
+	if trackExecutionTime {
+		startTime = time.Now()
+	}
 
+	if onlyToday {
+		timeObj := time.Now()
+		currDay := timeObj.Day()
+		if currDay > 25 {
+			println("sorry today functionality is only available from 1-25th december")
+		} else {
+			dayArray[currDay-1].Solve()
+		}
 	} else {
-		for _, day := range dayArray {
+		for index, day := range dayArray {
+			if index < includeFrom-1 {
+				continue
+			}
+			if index > includeTo-1 {
+				continue
+			}
 			day.Solve()
 		}
+	}
+
+	if trackExecutionTime {
+		endTime := time.Now()
+		execTime := endTime.Sub(startTime)
+		fmt.Printf("total execution time: %v \n", execTime)
 	}
 }
