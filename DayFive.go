@@ -33,7 +33,7 @@ type inOutrange struct {
 
 func (day DayFive) Solve() {
 	part1(&day)
-	part2_take2(&day)
+	part2(&day)
 	fmt.Printf("day 5 part 1: %d day 5 part 2: %d\n", day.outputpt1, day.outputpt2)
 }
 func part1(day *DayFive) {
@@ -95,72 +95,7 @@ func part1(day *DayFive) {
 
 }
 
-// currently solved using brute force, on an M1 it will take around two seconds to run this function and it checks around 1.5000.000.000 seeds, which is checked against every range
-// this could probably be optimized and made better, however my 6 am pre coffee brain decided to go with what could work
 func part2(day *DayFive) {
-	lines := MapFileToStringArr(day.inputPath)
-	var rangeArr [humidity_location + 1][]inOutrange
-	var seeds []int
-	globalRangeIndex := -1
-	for _, line := range lines {
-		count := 0
-		regex := regexp.MustCompile(" ?(\\d+)")
-		matches := regex.FindAllStringSubmatch(line, -1)
-		var rangeElement inOutrange
-		for _, match := range matches {
-			num, _ := strconv.Atoi(match[1])
-			//if the current index is -1 it means that we are parsing seeds from the input thus we should not alter the rangeElement
-			if globalRangeIndex > -1 {
-				switch count {
-				case 0:
-					rangeElement.outputStart = num
-					break
-				case 1:
-					rangeElement.inputStart = num
-					break
-				case 2:
-					rangeElement.numRange = num
-					break
-				}
-				count++
-			} else {
-				seeds = append(seeds, num)
-			}
-		}
-
-		//new range starts in input line
-		if len(matches) == 0 && len(line) > 0 {
-			globalRangeIndex += 1
-		} else {
-			//only if there is charactes in a line, append rangeElement
-			if globalRangeIndex >= 0 && len(line) > 0 {
-				rangeArr[globalRangeIndex] = append(rangeArr[globalRangeIndex], rangeElement)
-			}
-		}
-	}
-	minlocation := 100000000000000000
-	//from here input has been parsed so we loop through each number to get its position
-	for i := 0; i < len(seeds); i += 2 {
-		locValue := seeds[i]
-		for j := 0; j < seeds[i+1]; j++ {
-			locValue = seeds[i] + j
-			for _, rangeCollection := range rangeArr {
-				for _, rangeObj := range rangeCollection {
-					if locValue >= rangeObj.inputStart && locValue <= (rangeObj.inputStart-1+rangeObj.numRange) {
-						locValue = rangeObj.outputStart + locValue - rangeObj.inputStart
-						break
-					}
-				}
-			}
-			if locValue < minlocation {
-				minlocation = locValue
-			}
-		}
-
-	}
-	day.outputpt2 = minlocation
-}
-func part2_take2(day *DayFive) {
 	day.outputpt2 = 1000000000000000000
 	lines := MapFileToStringArr(day.inputPath)
 	var rangeArr [humidity_location + 1][]inOutrange
@@ -265,34 +200,38 @@ func findPairingRange(currElements *[]inOutrange, rangeCollection []inOutrange, 
 	}
 	if !foundWholeRange {
 		for _, rangeObj := range rangeCollection {
-			//we have some input within range but not al
+			//calculate values for easy readability	
 			evalStart := evalRange.inputStart
 			evalEnd := evalRange.inputStart + evalRange.numRange
 			rangeStart := rangeObj.inputStart
 			rangeEnd := rangeObj.numRange + rangeObj.inputStart
+			//if we have a range where there are a number of beginning elements in evalRange that does not fit, we split
 			if evalStart < rangeStart && evalEnd > rangeStart && evalEnd <= rangeEnd {
 				splitObj := inOutrange{}
 				originalRange := evalRange.numRange
-				//77 - 74 = 3
-				//74 3
+				//the curr range is now set to the elements between evalStart and rangeStart, that is the elements that do not fit into the range object
 				(*currElements)[evalIdx].numRange = rangeStart - evalStart
 				(*currElements)[evalIdx].inputStart = evalStart 
-
-				//in range values
+				//splitObj represents all the elements that do fit, thus we set the numRange to the remaining numbers
 				splitObj.numRange = originalRange - (*currElements)[evalIdx].numRange
+				//we know that splitObj without map would start at rangeob.inputStart since we want to map we set it imidiatly to the outputStart
 				splitObj.inputStart = rangeObj.outputStart 	
 				(*currElements) = append((*currElements), splitObj)
+				//our (*currElements)[evalIdx] needs to be rechecked to see if it fits in to any range now that it has been altered
 				findPairingRange(currElements, rangeCollection, (*currElements)[evalIdx], evalIdx)
 
-				//case where we overflow in regards to numbers
+				//there are more elements in our evalRange than in the range we are checking, thus a split is required
 			} else if evalStart >= rangeStart && evalStart < rangeEnd && evalEnd > rangeEnd {
 				splitObj := inOutrange{}
+				//currElements[evalIdx] is set to represent the values that are present in evalRange thats why we take all elements up to the rangeEnd
 				(*currElements)[evalIdx].numRange = rangeEnd - evalStart
+				//we then take all elements 
 				splitObj.numRange = evalEnd - rangeEnd
 				splitObj.inputStart = rangeEnd
-				(*currElements)[evalIdx].inputStart = rangeObj.outputStart + evalStart - rangeObj.inputStart
+				//we set the start equal to the output + the offset in the range ie if eval is starting at 77 and range at 73, and output start is 5 we set inputStart = 5 + 77-73 = 9
+				(*currElements)[evalIdx].inputStart = rangeObj.outputStart + evalStart - 	rangeStart
 				*currElements = append((*currElements), splitObj)
-
+				//since splitObj now represents a new range the new range is also checked to see if it has any matches
 				findPairingRange(currElements, rangeCollection, splitObj, len(*currElements)-1)
 			}
 		}
