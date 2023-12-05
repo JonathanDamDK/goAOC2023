@@ -67,7 +67,6 @@ func main() {
 						regStr := "-includeTime"
 						res, _ := regexp.MatchString(regStr, arg)
 						if res {
-							println("will time in execution")
 							trackExecutionTime = true
 						}
 					}
