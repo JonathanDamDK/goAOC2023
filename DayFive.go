@@ -94,6 +94,9 @@ func part1(day *DayFive) {
 	day.outputpt1 = min(locations)
 
 }
+
+//currently solved using brute force, on an M1 it will take around two seconds to run this function and it checks around 1.5000.000.000 seeds, which is checked against every range 
+//this could probably be optimized and made better, however my 6 am pre coffee brain decided to go with what could work
 func part2(day *DayFive) {
 	lines := MapFileToStringArr(day.inputPath)
 	var rangeArr [humidity_location + 1][]inOutrange
