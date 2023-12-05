@@ -33,7 +33,7 @@ type inOutrange struct {
 
 func (day DayFive) Solve() {
 	part1(&day)
-	part2(&day)
+	part2_take2(&day)
 	fmt.Printf("day 5 part 1: %d day 5 part 2: %d\n", day.outputpt1, day.outputpt2)
 }
 func part1(day *DayFive) {
@@ -201,13 +201,14 @@ func part2_take2(day *DayFive) {
 			}
 		}
 	}
+	minvalue := 100000000000000000
 	seedPairs := make([]inOutrange, len(seeds)/2)
 	for i := 0; i < len(seeds); i += 2 {
 		seedIndex := 0
 		if i != 0 {
 			seedIndex = i / 2
 		}
-		fmt.Printf("seed: %d %d \n", seeds[i], seeds[i+1])
+		//fmt.Printf("seed: %d %d \n", seeds[i], seeds[i+1])
 		seedPairs[seedIndex] = inOutrange{seeds[i], 0, seeds[i+1]}
 	}
 	var resultArr [][]inOutrange
@@ -216,14 +217,23 @@ func part2_take2(day *DayFive) {
 		for _, rangeCollection := range rangeArr {
 			for evalIdx, evalRange := range currEvaluationRanges {
 				findPairingRange(&currEvaluationRanges, rangeCollection, evalRange, evalIdx)
-				resultArr = append(resultArr, currEvaluationRanges)
 			}
-			day.outputpt2 = min([]int{day.outputpt2, (min_row(resultArr[len(resultArr)-1]))})
 		}
 
-	}
+		resultArr = append(resultArr, currEvaluationRanges)
+		
+		minvalue = min_two(minvalue,min_row(currEvaluationRanges))
 
-	fmt.Printf("%v \n", resultArr[len(resultArr) -1])
+	}
+	day.outputpt2 = minvalue
+
+}
+func min_two(num1 int, num2 int) int{
+	if num1 < num2 {
+			return num1
+	} else {
+		return num2
+	}
 }
 func min_row(evalRange []inOutrange) int {
 	minElem := 1000000000000000000
@@ -260,18 +270,19 @@ func findPairingRange(currElements *[]inOutrange, rangeCollection []inOutrange, 
 			evalEnd := evalRange.inputStart + evalRange.numRange
 			rangeStart := rangeObj.inputStart
 			rangeEnd := rangeObj.numRange + rangeObj.inputStart
-
-			if evalStart < rangeStart && evalEnd < rangeStart {
+			if evalStart < rangeStart && evalEnd > rangeStart && evalEnd <= rangeEnd {
 				splitObj := inOutrange{}
 				originalRange := evalRange.numRange
 				//77 - 74 = 3
 				//74 3
-				(*currElements)[evalIdx].numRange = rangeObj.inputStart - evalRange.inputStart
-				(*currElements)[evalIdx].inputStart = evalRange.inputStart
+				(*currElements)[evalIdx].numRange = rangeStart - evalStart
+				(*currElements)[evalIdx].inputStart = evalStart 
+
+				//in range values
 				splitObj.numRange = originalRange - (*currElements)[evalIdx].numRange
-				splitObj.inputStart = rangeObj.outputStart + evalRange.inputStart - rangeObj.numRange
+				splitObj.inputStart = rangeObj.outputStart 	
 				(*currElements) = append((*currElements), splitObj)
-				//findPairingRange(currElements, rangeCollection, (*currElements)[evalIdx], evalIdx)
+				findPairingRange(currElements, rangeCollection, (*currElements)[evalIdx], evalIdx)
 
 				//case where we overflow in regards to numbers
 			} else if evalStart >= rangeStart && evalStart < rangeEnd && evalEnd > rangeEnd {
