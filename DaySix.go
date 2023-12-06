@@ -9,7 +9,7 @@ import (
 type DaySix struct {
 	inputPath   string
 	input       []string
-	outputpart1 int	
+	outputpart1 int
 	outputpart2 int
 }
 type gameDaysix struct {
@@ -41,8 +41,7 @@ func (day DaySix) Solve() {
 		} else {
 			gamept2.recordLen = num
 		}
-		fmt.Printf("%v \n", gamept2)
-
+		//part1
 		day.outputpart1 = 1
 		for _, game := range games {
 			uniqueWays := 0
@@ -57,7 +56,7 @@ func (day DaySix) Solve() {
 		}
 	}
 
-	//pt2
+	//pt2 - bruteforce should probably not be done but it is < 100 ms run time so we keep it simple
 
 	for num := 0; num <= gamept2.time; num++ {
 		speed := num
@@ -67,5 +66,5 @@ func (day DaySix) Solve() {
 		}
 	}
 
-	fmt.Printf("Day six part 1: %d part 2: %d \n", day.outputpart1,day.outputpart2)
+	fmt.Printf("Day six part 1: %d part 2: %d \n", day.outputpart1, day.outputpart2)
 }
