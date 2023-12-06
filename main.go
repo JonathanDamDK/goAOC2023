@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-
 	dayArray := []Day{
 		DayOne{inputPath: "./inputs/dayOne.txt"},
 		DayTwo{inputPath: "./inputs/dayTwo.txt"},
@@ -99,7 +98,6 @@ func main() {
 			day.Solve()
 		}
 	}
-
 	if trackExecutionTime {
 		endTime := time.Now()
 		execTime := endTime.Sub(startTime)

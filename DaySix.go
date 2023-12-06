@@ -56,7 +56,7 @@ func (day DaySix) Solve() {
 	//pt2 - bruteforce should probably not be done but it is < 100 ms run time so we keep it simple
 	day.outputpart2 = combinationsMath(gamept2)
 	
-	fmt.Printf("Day six part 1: %d, part 2: %d \n", day.outputpart1, day.outputpart2)
+	fmt.Printf("Day 6 part 1: %d, part 2: %d \n", day.outputpart1, day.outputpart2)
 }
 
 
@@ -82,7 +82,6 @@ func combinationsMath(game gameDaysix) int {
 		maxval = int(math.Ceil(maxfl - 1))
 		minval = int(math.Floor(minfl + 1))
 	}
-	fmt.Printf("min %d max %d\n", minval, maxval)
 	return maxval - minval + 1
 }
 
