@@ -50,18 +50,19 @@ func (day DaySix) Solve() {
 	day.outputpart1 = 1
 	comb := 1
 	for _, game := range games {
-		comb *= combinationsMath(game)
+		comb *= solveQuadratic(game)
 		day.outputpart1 = comb
 	}
 	//pt2 - bruteforce should probably not be done but it is < 100 ms run time so we keep it simple
-	day.outputpart2 = combinationsMath(gamept2)
+	day.outputpart2 = solveQuadratic(gamept2)
 	
 	fmt.Printf("Day 6 part 1: %d, part 2: %d \n", day.outputpart1, day.outputpart2)
 }
 
 
 
-func combinationsMath(game gameDaysix) int {
+//calculates and returns maxRoot - minRoot of the quadratic equation
+func solveQuadratic(game gameDaysix) int {
 	//EXPLAINER we want to find all games that hold score > recordLen
 	//we know output = holdTime * (totalTime - holdTime)
 	//thus we want holdTime*(totalTime - holdTime) > recordLen 
