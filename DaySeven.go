@@ -234,18 +234,12 @@ func (day DaySeven) Solve() {
 				hands[i].handVal = score
 			}
 		}
-
-		fmt.Printf("%v %d %d \n", sortArr, count_1, count_2)
-
 	}
 	sort.Sort(hands)
 	for i, hand := range hands {
 		day.outputpt2 += (i + 1) * hand.bid
 	}
-	for _, hand := range hands {
-		fmt.Printf("%v %d \n", hand.cards, hand.handVal)
-	}
-	fmt.Printf("day 7 part 1 : %d part 2: %d", day.outputpt1, day.outputpt2)
+	fmt.Printf("day 7 part 1 : %d part 2: %d \n", day.outputpt1, day.outputpt2)
 }
 
 func getNumericValue(val string) int {

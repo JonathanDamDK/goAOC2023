@@ -60,11 +60,14 @@ func (day DayEight) Solve() {
 	//part 2 gave up and used reddit to discover that i can use LCM rest is my own design
 	var startNodes []string
 	for key := range mapLR {
+		//get all nodes that end with A
 		if key[len(key)-1] == 'A' {
 			startNodes = append(startNodes, key)
 		}
 	}
 	pathArr := make([]int, len(startNodes))
+
+	//find every nodes shortest path to a node that ends with Z
 	for i, node := range startNodes {
 		found = false
 		count = 0
@@ -88,6 +91,7 @@ func (day DayEight) Solve() {
 		pathArr[i] = count
 	}
 	count = 0
+	//use LCM 
 	day.outputpt2 = lcm(pathArr, len(pathArr))
 	fmt.Printf("Day 8: part 1 : %d part 2 : %d\n", day.outputpt1, day.outputpt2)
 }
