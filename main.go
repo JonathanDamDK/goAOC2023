@@ -19,7 +19,7 @@ func main() {
 		DaySeven{inputPath: "./inputs/DaySeven.txt"},
 		DayEight{inputPath: "./inputs/DayEight.txt"},
 		DayNine{inputPath: "./inputs/DayNine.txt"},
-		DayTen{},
+		DayTen{inputPath : "./inputs/DayTen.txt"},
 		DayEleven{},
 		DayTwelve{},
 		DayThirteen{},

@@ -85,7 +85,6 @@ func (day DayNine) Solve() {
 			}
 			currDifference = elem[len(elem)-1] + currDifference
 			currDifferencepart2 = elem[0] - currDifferencepart2
-			fmt.Printf("elem %d : %v : elem %d \n",  currDifferencepart2,elem,currDifference)
 		}
 
 		totalPrediction += currDifference
